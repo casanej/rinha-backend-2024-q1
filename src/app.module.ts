@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientesEntity } from './clientes/entities/cliente.entity';
 import { TransactionsEntity } from './clientes/entities/transacoes.entity';
 
+console.log("[PROCESS 1]", process.env)
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
