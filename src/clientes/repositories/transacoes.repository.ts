@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { TransactionsEntity, TransacoesTipos, TransacoesTiposEnum } from "../entities/transacoes.entity";
@@ -17,20 +17,12 @@ export class TransactionsRepository {
     return transacoes;
   }
 
-  async getTransactionsSaldo(id: number): Promise<number> {
-    const saldo = await this.transacoesRepository.createQueryBuilder('transacoes')
-      .select('SUM(transacoes.valor)', 'total')
-      .where('transacoes.clienteId = :id', { id })
-      .getRawOne();
-
-    return saldo.total;
-  }
-
   async handleTransaction(cliente: ClientesEntity, value: number, type: TransacoesTipos, description: string) {
     const { saldo, limite } = cliente;
-    const novoSaldo = (saldo ?? 0) + value;
+    const novoSaldo = saldo + value;
 
     if (type === TransacoesTiposEnum.DEBITO && (novoSaldo < (limite * -1))) {
+      Logger.error(`Saldo insuficiente. ID: ${cliente.id} | Saldo: ${novoSaldo} | Limite: ${limite}`)
       throw new HttpException('Saldo insuficiente', HttpStatus.UNPROCESSABLE_ENTITY);
     }
 

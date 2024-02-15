@@ -1,13 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ClientesModule } from './clientes/clientes.module';
+import { ClientModule } from './clientes/clientes.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientesEntity } from './clientes/entities/cliente.entity';
 import { TransactionsEntity } from './clientes/entities/transacoes.entity';
-
-console.log("[PROCESS 1]", process.env)
 
 @Module({
   imports: [
@@ -25,9 +21,7 @@ console.log("[PROCESS 1]", process.env)
       ],
       synchronize: true,
     }),
-    ClientesModule
+    ClientModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule { }

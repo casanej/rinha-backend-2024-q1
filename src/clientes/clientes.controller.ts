@@ -3,7 +3,7 @@ import { ClientesService } from './clientes.service';
 import { TransactionClienteRequestDto } from './dto/cliente-transacao.dto';
 
 @Controller('clientes')
-export class ClientesController {
+export class ClientController {
   constructor(private readonly clientesService: ClientesService) { }
 
   @Get(':id/extrato')

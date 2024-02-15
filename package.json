@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
 
     "docker:build": "yarn build && docker buildx build --platform linux/amd64 -t casanje/rinha-backend-2024-q1:latest .",
-    "docker:push": "docker push casanje/rinha-backend-2024-q1:latest"
+    "docker:push": "docker push casanje/rinha-backend-2024-q1:latest",
+    "docker:flow": "yarn docker:build && yarn docker:push"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { ClientesEntity, ClientesEntityRelations } from "../entities/cliente.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -16,6 +16,7 @@ export class ClientsRepository {
     const client = await this.clientesRepository.findOne({ where: { id }, relations: relations ?? [] });
 
     if (!client) {
+      Logger.error(`Cliente não encontrado. ID: ${id}`);
       throw new HttpException('Cliente não encontrado', HttpStatus.NOT_FOUND);
     }
 
