@@ -9,7 +9,7 @@ export class TransactionClienteRequestDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(1)
-  @Matches(/^(c|b)$/)
+  @Matches(/^(c|d)$/)
   readonly tipo: TransacoesTipos;
 
   @IsString()

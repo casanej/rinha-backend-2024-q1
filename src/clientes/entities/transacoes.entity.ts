@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ClientesEntity } from "./cliente.entity";
 
-export type TransacoesTipos = 'c' | 'b';
+export type TransacoesTipos = 'c' | 'd';
 
 export enum TransacoesTiposEnum {
   CREDITO = 'c',
-  DEBITO = 'b'
+  DEBITO = 'd'
 }
 
 type TransacoesEntityInit = Partial<Omit<TransactionsEntity, 'clientId' | 'realizadaEm'>>
