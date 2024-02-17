@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { ClientesService } from './clientes.service';
 import { TransactionClienteRequestDto } from './dto/cliente-transacao.dto';
 
@@ -12,6 +12,7 @@ export class ClientController {
   }
 
   @Post(':id/transacoes')
+  @HttpCode(200)
   clientTransactions(@Param('id') id: string, @Body() transaction: TransactionClienteRequestDto) {
     return this.clientesService.transaction(+id, transaction);
   }

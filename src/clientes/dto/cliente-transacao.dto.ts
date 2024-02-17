@@ -1,9 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, Matches, MaxLength } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsString, Matches, MaxLength } from 'class-validator';
 import { TransacoesTipos } from '../entities/transacoes.entity';
 
 export class TransactionClienteRequestDto {
   @IsNotEmpty()
   @IsNumber()
+  @IsInt()
   readonly valor: number;
 
   @IsNotEmpty()
