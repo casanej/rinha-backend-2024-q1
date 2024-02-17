@@ -19,9 +19,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
 
-    "docker:build": "yarn build && docker buildx build --platform linux/amd64 -t casanje/rinha-backend-2024-q1:latest .",
+    "docker:build": "docker buildx build --platform linux/amd64 -t casanje/rinha-backend-2024-q1:latest .",
     "docker:push": "docker push casanje/rinha-backend-2024-q1:latest",
-    "docker:flow": "yarn docker:build && yarn docker:push"
+    "docker:flow": "yarn docker:build && yarn docker:push",
+    "docker:up": "docker compose up",
+    "docker:run": "docker container run -d --expose 9999"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
