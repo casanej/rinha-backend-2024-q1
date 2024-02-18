@@ -16,4 +16,10 @@ export class ClientController {
   clientTransactions(@Param('id') id: string, @Body() transaction: TransactionClienteRequestDto) {
     return this.clientesService.transaction(+id, transaction);
   }
+
+  @Get('erase')
+  @HttpCode(200)
+  eraseDatabase() {
+    return this.clientesService.eraseDatabase();
+  }
 }

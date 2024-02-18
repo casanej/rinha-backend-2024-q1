@@ -27,6 +27,10 @@ export class ClientesService {
 
     const { descricao, tipo, valor } = transaction;
 
-    return await this.transactionsRepository.handleTransaction(cliente, valor, tipo, descricao);
+    return await this.transactionsRepository.handleTransaction(cliente.id, valor, tipo, descricao);
+  }
+
+  async eraseDatabase() {
+    return await this.clientsRepository.eraseDatabase();
   }
 }

@@ -17,20 +17,21 @@ export class TransactionsRepository {
     return transacoes;
   }
 
-  async handleTransaction(cliente: ClientesEntity, value: number, type: TransacoesTipos, description: string) {
-    const { saldo, limite } = cliente;
-    const novoSaldo = saldo + value;
-
-    if (type === TransacoesTiposEnum.DEBITO && (novoSaldo < (limite * -1))) {
-      Logger.error(`Saldo insuficiente. ID: ${cliente.id} | Saldo: ${novoSaldo} | Limite: ${limite}`)
-      throw new HttpException('Saldo insuficiente', HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
-    const transacao = this.transacoesRepository.manager.transaction(async transactionalEntityManager => {
+  async handleTransaction(clientId: number, value: number, type: TransacoesTipos, description: string) {
+    const transacao = await this.transacoesRepository.manager.transaction(async transactionalEntityManager => {
       const client = await transactionalEntityManager.findOne(ClientesEntity, {
-        where: { id: cliente.id },
+        where: { id: clientId },
         lock: { mode: 'pessimistic_write' }
       });
+
+      const { saldo, limite } = client;
+
+      const novoSaldo = type === 'c' ? saldo + value : saldo - value;
+
+      if (type === TransacoesTiposEnum.DEBITO && (novoSaldo < (limite * -1))) {
+        Logger.error(`Saldo insuficiente. ID: ${clientId} | Saldo: ${novoSaldo} | Limite: ${limite}`)
+        throw new HttpException('Saldo insuficiente', HttpStatus.UNPROCESSABLE_ENTITY);
+      }
 
       const transacaoSalvar = new TransactionsEntity(client.id, {
         valor: value,
@@ -39,6 +40,9 @@ export class TransactionsRepository {
       });
 
       client.saldo = novoSaldo;
+
+      Logger.log(`Dados Input: ${value} | ${type}`);
+      Logger.log(`Dados update : ${JSON.stringify(transacaoSalvar)}`);
 
       await transactionalEntityManager.save(transacaoSalvar);
       await transactionalEntityManager.save(client);
