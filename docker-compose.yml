@@ -11,15 +11,18 @@ services:
       - DATANASE_USERNAME=postgres
       - DATABASE_PASSWORD=leonel2010
       - DATABASE_DB=rinha_backend_2024_q1
+      - TIMEOUT_IN_MILLISECONDS=60000
     ports:
       - "3001:3000"
     depends_on:
       - db
+    networks:
+      - rinha-backend
     deploy:
       resources:
         limits:
-          cpus: "0.7"
-          memory: "300MB"
+          cpus: "0.6"
+          memory: "175MB"
 
   api02:
     <<: *api
@@ -36,11 +39,13 @@ services:
       - api02
     ports:
       - "9999:9999"
+    networks:
+      - rinha-backend
     deploy:
       resources:
         limits:
-          cpus: "0.3"
-          memory: "100MB"
+          cpus: "0.2"
+          memory: "50MB"
 
   db:
     image: postgres:latest
@@ -53,14 +58,15 @@ services:
       - "5432:5432"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: postgres -c checkpoint_timeout=600 -c max_wal_size=4096 -c synchronous_commit=0 -c full_page_writes=0
+    command: postgres -c checkpoint_timeout=600 -c max_wal_size=4096
+    networks:
+      - rinha-backend
     deploy:
       resources:
         limits:
           cpus: "0.5"
-          memory: "150MB"
+          memory: "90MB"
 
 networks:
-  default:
+  rinha-backend:
     driver: bridge
-    name: rinha-nginx-2024q1
