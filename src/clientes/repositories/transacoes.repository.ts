@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { TransactionsEntity, TransacoesTipos, TransacoesTiposEnum } from "../entities/transacoes.entity";
@@ -29,7 +29,6 @@ export class TransactionsRepository {
       const novoSaldo = type === 'c' ? saldo + value : saldo - value;
 
       if (type === TransacoesTiposEnum.DEBITO && (novoSaldo < (limite * -1))) {
-        Logger.error(`Saldo insuficiente. ID: ${clientId} | Saldo: ${novoSaldo} | Limite: ${limite}`)
         throw new HttpException('Saldo insuficiente', HttpStatus.UNPROCESSABLE_ENTITY);
       }
 
@@ -40,9 +39,6 @@ export class TransactionsRepository {
       });
 
       client.saldo = novoSaldo;
-
-      Logger.log(`Dados Input: ${value} | ${type}`);
-      Logger.log(`Dados update : ${JSON.stringify(transacaoSalvar)}`);
 
       await transactionalEntityManager.save(transacaoSalvar);
       await transactionalEntityManager.save(client);
