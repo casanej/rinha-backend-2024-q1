@@ -7,14 +7,15 @@ export class ClientController {
   constructor(private readonly clientesService: ClientesService) { }
 
   @Get(':id/extrato')
-  clientBankStatement(@Param('id') id: string) {
-    return this.clientesService.bankStatement(+id);
+  @HttpCode(200)
+  async clientBankStatement(@Param('id') id: string) {
+    return await this.clientesService.bankStatement(+id);
   }
 
   @Post(':id/transacoes')
   @HttpCode(200)
-  clientTransactions(@Param('id') id: string, @Body() transaction: TransactionClienteRequestDto) {
-    return this.clientesService.transaction(+id, transaction);
+  async clientTransactions(@Param('id') id: string, @Body() transaction: TransactionClienteRequestDto) {
+    return await this.clientesService.transaction(+id, transaction);
   }
 
   @Get('erase')
