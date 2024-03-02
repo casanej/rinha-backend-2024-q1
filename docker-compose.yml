@@ -5,13 +5,11 @@ services:
     image: casanje/rinha-backend-2024-q1:latest
     hostname: api01
     environment:
-      - PORT=3000
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
       - DATANASE_USERNAME=postgres
-      - DATABASE_PASSWORD=leonel2010
+      - DATABASE_PASSWORD=rinha
       - DATABASE_DB=rinha_backend_2024_q1
-      - TIMEOUT_IN_MILLISECONDS=60000
     ports:
       - "3001:3000"
     depends_on:
@@ -22,7 +20,7 @@ services:
       resources:
         limits:
           cpus: "0.6"
-          memory: "175MB"
+          memory: "210MB"
 
   api02:
     <<: *api
@@ -45,14 +43,14 @@ services:
       resources:
         limits:
           cpus: "0.2"
-          memory: "50MB"
+          memory: "65MB"
 
   db:
     image: postgres:latest
     hostname: db
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=leonel2010
+      - POSTGRES_PASSWORD=rinha
       - POSTGRES_DB=rinha_backend_2024_q1
     ports:
       - "5432:5432"
@@ -64,8 +62,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
-          memory: "90MB"
+          cpus: "0.2"
+          memory: "65MB"
 
 networks:
   rinha-backend:
