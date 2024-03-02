@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientModule } from './clientes/clientes.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientesEntity } from './clientes/entities/cliente.entity';
+import { TransactionsEntity } from './clientes/entities/transacoes.entity';
 
 @Module({
   imports: [
@@ -13,7 +15,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DATANASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
-      entities: [],
+      entities: [
+        ClientesEntity,
+        TransactionsEntity,
+      ],
       synchronize: false,
     }),
     ClientModule
